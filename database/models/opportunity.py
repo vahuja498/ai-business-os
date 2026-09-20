@@ -13,6 +13,12 @@ class Opportunity(Base, UUIDMixin, TimestampMixin):
         index=True,
     )
     title: Mapped[str] = mapped_column(String(255), nullable=False)
+    opportunity_family: Mapped[str] = mapped_column(
+        String(100), default="LEAD_GENERATION", nullable=False, index=True
+    )
+    customer: Mapped[str] = mapped_column(String(255), nullable=True)
+    problem: Mapped[str] = mapped_column(Text, nullable=True)
+    solution: Mapped[str] = mapped_column(Text, nullable=True)
     description: Mapped[str] = mapped_column(Text, nullable=True)
     target_market: Mapped[str] = mapped_column(String(255), nullable=True)
     revenue_model: Mapped[str] = mapped_column(String(100), nullable=True)
@@ -23,6 +29,9 @@ class Opportunity(Base, UUIDMixin, TimestampMixin):
     estimated_margin: Mapped[float] = mapped_column(Float, default=0.0, nullable=False)
     automation_potential: Mapped[str] = mapped_column(String(50), default="HIGH", nullable=False)
     time_to_first_revenue: Mapped[str] = mapped_column(String(50), default="30 days", nullable=False)
+    recurring_potential: Mapped[str] = mapped_column(String(50), default="MEDIUM", nullable=False)
+    competition: Mapped[str] = mapped_column(Text, nullable=True)
+    geography: Mapped[list] = mapped_column(JSON, default=list, nullable=False)
     regulatory_complexity: Mapped[str] = mapped_column(String(50), default="LOW", nullable=False)
     platform_dependency: Mapped[str] = mapped_column(String(50), default="LOW", nullable=False)
     uncertainty: Mapped[str] = mapped_column(String(20), default="MEDIUM", nullable=False)
@@ -32,5 +41,8 @@ class Opportunity(Base, UUIDMixin, TimestampMixin):
     findings: Mapped[list] = mapped_column(JSON, default=list, nullable=False)
     assumptions: Mapped[list] = mapped_column(JSON, default=list, nullable=False)
     unknowns: Mapped[list] = mapped_column(JSON, default=list, nullable=False)
+    failure_modes: Mapped[list] = mapped_column(JSON, default=list, nullable=False)
+    contradicting_evidence: Mapped[list] = mapped_column(JSON, default=list, nullable=False)
+    reality_check: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
     recommended_experiment: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
     status: Mapped[str] = mapped_column(String(50), default="IDENTIFIED", nullable=False, index=True)

@@ -13,7 +13,10 @@ class Settings(BaseSettings):
 
     # Model Provider Configuration
     MODEL_PROVIDER: str = "mock"
-    MODEL_NAME: str | None = None
+    MODEL_NAME: str = "default-model"
+    RESEARCH_MODEL: str | None = None
+    CEO_MODEL: str | None = None
+    CLASSIFICATION_MODEL: str | None = None
     OPENAI_API_KEY: str | None = None
     GEMINI_API_KEY: str | None = None
     ANTHROPIC_API_KEY: str | None = None

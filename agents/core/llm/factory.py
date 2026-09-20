@@ -10,15 +10,26 @@ class ModelProviderFactory:
     def get_provider(
         provider_type: str | None = None,
         model_name: str | None = None,
+        role: str | None = None,  # "research", "ceo", "classification", or None
     ) -> ModelProvider:
         provider = (provider_type or os.getenv("MODEL_PROVIDER", "mock")).lower()
-        model = model_name or os.getenv("MODEL_NAME")
+
+        # Dynamic role-based model resolution without hard-coding historical model strings
+        if not model_name:
+            if role == "research":
+                model_name = os.getenv("RESEARCH_MODEL") or os.getenv("MODEL_NAME", "standard-model")
+            elif role == "ceo":
+                model_name = os.getenv("CEO_MODEL") or os.getenv("MODEL_NAME", "standard-model")
+            elif role == "classification":
+                model_name = os.getenv("CLASSIFICATION_MODEL") or os.getenv("MODEL_NAME", "standard-model")
+            else:
+                model_name = os.getenv("MODEL_NAME", "standard-model")
 
         if provider == "openai":
-            return OpenAIProvider(model_name=model or "gpt-4o-mini")
+            return OpenAIProvider(model_name=model_name)
         elif provider == "gemini":
-            return GeminiProvider(model_name=model or "gemini-1.5-flash")
+            return GeminiProvider(model_name=model_name)
         elif provider == "anthropic":
-            return AnthropicProvider(model_name=model or "claude-3-5-sonnet-20241022")
+            return AnthropicProvider(model_name=model_name)
         else:
             return MockModelProvider()
