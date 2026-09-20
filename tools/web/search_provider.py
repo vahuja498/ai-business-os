@@ -139,6 +139,89 @@ class MockWebSearchProvider(WebSearchProvider):
                 ),
             ]
 
+        elif "etp" in q or "water" in q or "pollution" in q or "hspcb" in q:
+            return [
+                NormalizedSearchResult(
+                    source_url="https://hspcb.gov.in/consent-management-guidelines-2024",
+                    source_title="Haryana State Pollution Control Board - CTO Consent Guidelines",
+                    source_domain="hspcb.gov.in",
+                    publication_date="2024-02-15",
+                    evidence_text="Red and Orange category industrial units must submit online compliance audits and valid ETP effluent discharge parameters quarterly.",
+                    relevance_score=0.96,
+                    classification_hint="FACT",
+                ),
+                NormalizedSearchResult(
+                    source_url="https://enviro-tech-india.org/etp-amc-costs",
+                    source_title="Environmental Engineering Industry Pricing Survey",
+                    source_domain="enviro-tech-india.org",
+                    publication_date="2024-01-20",
+                    evidence_text="Mid-size industrial units in NCR spend an estimated 25,000 INR to 60,000 INR monthly on third-party ETP maintenance AMCs.",
+                    relevance_score=0.88,
+                    classification_hint="ESTIMATE",
+                ),
+            ]
+
+        elif "msme" in q or "zed" in q or "43b" in q:
+            return [
+                NormalizedSearchResult(
+                    source_url="https://msme.gov.in/zed-certification-scheme",
+                    source_title="Ministry of MSME - Zero Defect Zero Effect (ZED) Financial Assistance",
+                    source_domain="msme.gov.in",
+                    publication_date="2024-03-01",
+                    evidence_text="Micro and small enterprises receive up to 80% subsidy on certification fees and up to 5 lakh INR for handholding consultancy.",
+                    relevance_score=0.95,
+                    classification_hint="FACT",
+                ),
+                NormalizedSearchResult(
+                    source_url="https://cbic.gov.in/guidelines-section-43bh",
+                    source_title="CBIC & Income Tax Department - Section 43B(h) MSME Timely Payment Guidance",
+                    source_domain="cbic.gov.in",
+                    publication_date="2024-04-10",
+                    evidence_text="Under Section 43B(h), deductions for amounts due to MSE suppliers are disallowed if not paid within 45 days of delivery.",
+                    relevance_score=0.94,
+                    classification_hint="FACT",
+                ),
+            ]
+
+        elif "hvac" in q or "chiller" in q:
+            return [
+                NormalizedSearchResult(
+                    source_url="https://ishrae.in/commercial-chiller-maintenance-rates",
+                    source_title="Indian Society of Heating, Refrigerating and Air Conditioning Engineers (ISHRAE) Standards",
+                    source_domain="ishrae.in",
+                    publication_date="2024-01-10",
+                    evidence_text="Commercial complexes require quarterly chiller efficiency audits, with annual maintenance contracts averaging 1,200 INR to 2,500 INR per TR.",
+                    relevance_score=0.91,
+                    classification_hint="FACT",
+                ),
+            ]
+
+        elif "tooling" in q or "cnc" in q or "spare" in q:
+            return [
+                NormalizedSearchResult(
+                    source_url="https://tagma-india.org/tooling-procurement-index-2024",
+                    source_title="Tool and Gauge Manufacturers Association of India (TAGMA)",
+                    source_domain="tagma-india.org",
+                    publication_date="2024-02-18",
+                    evidence_text="Small machine workshops experience average tooling procurement delays of 3-7 days, paying spot markups of 15-25% for emergency spares.",
+                    relevance_score=0.90,
+                    classification_hint="ESTIMATE",
+                ),
+            ]
+
+        elif "packaging" in q or "pallet" in q or "box" in q:
+            return [
+                NormalizedSearchResult(
+                    source_url="https://fipi.org.in/industrial-packaging-circular-economy",
+                    source_title="Federation of Indian Packaging Industry Market Bulletin",
+                    source_domain="fipi.org.in",
+                    publication_date="2024-03-05",
+                    evidence_text="Secondary packaging boxes and pallets have a surplus liquidation velocity of under 10 days in NCR automotive clusters.",
+                    relevance_score=0.89,
+                    classification_hint="ESTIMATE",
+                ),
+            ]
+
         # Generic default evidence
         domain = "market-indicators.internal"
         return [
