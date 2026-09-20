@@ -10,19 +10,34 @@ from policies.risk_rules import RiskLevel
 
 
 class CEOAgent(BaseAgent):
-    def __init__(self, model_provider=None, research_agent: ResearchAgent | None = None, risk_agent: RiskAgent | None = None):
+    def __init__(
+        self,
+        model_provider=None,
+        research_agent: ResearchAgent | None = None,
+        risk_agent: RiskAgent | None = None,
+    ):
         metadata = AgentMetadata(
             name="CEOAgent",
             description="Autonomous business orchestrator: decomposes goals, assigns specialist tasks, and requests approvals.",
-            capabilities=["strategic_orchestration", "goal_decomposition", "agent_delegation", "kpi_monitoring"],
+            capabilities=["strategic_orchestration", "goal_decomposition", "agent_delegation", "kpi_monitoring", "opportunity_research"],
             allowed_tools=["database", "analytics"],  # CEO does not have direct unrestricted access
-            system_policy="Operate transparently, enforce risk gating, delegate to specialists, never bypass approvals.",
+            system_policy="Operate transparently, enforce risk gating, delegate to specialists, never bypass approvals. Never perform direct web searches.",
             risk_level=RiskLevel.MEDIUM,
             autonomy_level=AutonomyLevel.LEVEL_1_ASSIST,
         )
         super().__init__(metadata=metadata, model_provider=model_provider)
         self.research_agent = research_agent or ResearchAgent(model_provider)
         self.risk_agent = risk_agent or RiskAgent(model_provider)
+
+    async def delegate_opportunity_research(self, db, objective: str, business_id: str | None = None) -> list[dict[str, Any]]:
+        """Delegates strategic research to OpportunityEngine per Section 9 specification."""
+        from agents.research.opportunity_engine import OpportunityEngine
+        engine = OpportunityEngine(
+            model_provider=self.model_provider,
+            research_agent=self.research_agent,
+            risk_agent=self.risk_agent,
+        )
+        return await engine.execute_research(db=db, objective=objective, business_id=business_id)
 
     async def run(
         self,

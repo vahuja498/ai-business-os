@@ -11,6 +11,13 @@ class Settings(BaseSettings):
     CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
     DATABASE_URL: str = "sqlite+aiosqlite:///./ai_business_os.db"
 
+    # Model Provider Configuration
+    MODEL_PROVIDER: str = "mock"
+    MODEL_NAME: str | None = None
+    OPENAI_API_KEY: str | None = None
+    GEMINI_API_KEY: str | None = None
+    ANTHROPIC_API_KEY: str | None = None
+
     # Financial Guardrails
     MAX_DAILY_SPEND: float = 500.0
     MAX_TRANSACTION_AMOUNT: float = 1000.0
