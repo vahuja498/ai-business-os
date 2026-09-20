@@ -11,6 +11,7 @@ from apps.api.routers import (
     health,
     opportunities,
     tasks,
+    validation,
 )
 from database.connection import init_db
 
@@ -43,6 +44,7 @@ app.include_router(health.router)
 app.include_router(dashboard.router)
 app.include_router(businesses.router)
 app.include_router(opportunities.router)
+app.include_router(validation.router)
 app.include_router(approvals.router)
 app.include_router(agents.router)
 app.include_router(tasks.router)

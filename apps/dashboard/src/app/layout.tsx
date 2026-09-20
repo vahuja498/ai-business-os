@@ -42,6 +42,10 @@ export default function RootLayout({
               <Link href="/opportunities" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">
                 <span>Opportunities</span>
               </Link>
+              <Link href="/validation" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">
+                <span>Validation Engine</span>
+                <span className="ml-auto text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-500/30">Phase 5</span>
+              </Link>
               <Link href="/agents" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition">
                 <span>Agents</span>
               </Link>

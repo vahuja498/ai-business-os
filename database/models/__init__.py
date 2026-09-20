@@ -21,6 +21,15 @@ from database.models.core_stubs import (
     Experiment,
     Knowledge,
 )
+from database.models.validation import (
+    ValidationPlan,
+    Assumption,
+    ValidationExperiment,
+    ExperimentResult,
+    EvidenceUpdate,
+    ValidationApproval,
+    ValidationBudget,
+)
 
 __all__ = [
     "Business",
@@ -46,4 +55,11 @@ __all__ = [
     "Document",
     "Experiment",
     "Knowledge",
+    "ValidationPlan",
+    "Assumption",
+    "ValidationExperiment",
+    "ExperimentResult",
+    "EvidenceUpdate",
+    "ValidationApproval",
+    "ValidationBudget",
 ]
