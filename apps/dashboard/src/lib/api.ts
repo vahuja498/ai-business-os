@@ -505,4 +505,104 @@ export const api = {
     }
     return res.json();
   },
+
+  // --- Public Commerce & Digital Storefront ---
+  async getProducts(): Promise<ProductCatalog> {
+    const res = await fetch(`${API_BASE}/public/products`, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch products");
+    return res.json();
+  },
+
+  async createCheckout(payload: CheckoutRequestPayload): Promise<CheckoutResponseData> {
+    const res = await fetch(`${API_BASE}/public/checkout`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: "Checkout failed" }));
+      throw new Error(err.detail || "Checkout failed");
+    }
+    return res.json();
+  },
+
+  async verifyPayment(payload: VerifyPaymentPayload): Promise<any> {
+    const res = await fetch(`${API_BASE}/public/verify-payment`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: "Payment verification failed" }));
+      throw new Error(err.detail || "Payment verification failed");
+    }
+    return res.json();
+  },
+
+  async getOrderStatus(orderId: string): Promise<any> {
+    const res = await fetch(`${API_BASE}/public/orders/${orderId}/status`, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch order status");
+    return res.json();
+  },
 };
+
+export interface ProductTier {
+  sku: string;
+  name: string;
+  price_inr: number;
+  description: string;
+  deliverables: string[];
+}
+
+export interface DeliverableItem {
+  file_name: string;
+  title: string;
+  format: string;
+  category: string;
+}
+
+export interface ProductCatalog {
+  status: string;
+  business: {
+    name: string;
+    statutory_reference: string;
+    target_geography: string;
+  };
+  tiers: ProductTier[];
+  deliverables_manifest: DeliverableItem[];
+  payment_rails: string[];
+}
+
+export interface CheckoutRequestPayload {
+  sku: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone?: string;
+  company_name?: string;
+  gstin?: string;
+}
+
+export interface CheckoutResponseData {
+  order_id: string;
+  gateway: string;
+  gateway_order_id: string;
+  key_id?: string;
+  amount: number;
+  amount_paise: number;
+  currency: string;
+  sku: string;
+  product_name: string;
+  customer: {
+    name: string;
+    email: string;
+    phone?: string;
+    company_name?: string;
+  };
+}
+
+export interface VerifyPaymentPayload {
+  order_id: string;
+  gateway_order_id: string;
+  gateway_payment_id: string;
+  gateway_signature: string;
+}

@@ -1,0 +1,71 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ai_business_os_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-os_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secure_prod_password_change_me}
+      POSTGRES_DB: ${POSTGRES_DB:-ai_business_os_prod}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-os_admin} -d ${POSTGRES_DB:-ai_business_os_prod}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: ai_business_os_api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ENVIRONMENT: production
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-os_admin}:${POSTGRES_PASSWORD:-secure_prod_password_change_me}@postgres:5432/${POSTGRES_DB:-ai_business_os_prod}
+      CORS_ORIGINS: '["https://yourdomain.com", "http://localhost:3000"]'
+      
+      # Payment Rails Configuration (India)
+      PAYMENT_PROVIDER: ${PAYMENT_PROVIDER:-mock}
+      PAYMENT_MODE: ${PAYMENT_MODE:-sandbox}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-}
+      RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET:-}
+      
+      # Model & AI Providers
+      MODEL_PROVIDER: ${MODEL_PROVIDER:-gemini}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+
+      # Financial Guardrails (Strict Daily Caps)
+      MAX_DAILY_SPEND: ${MAX_DAILY_SPEND:-500.0}
+      MAX_TRANSACTION_AMOUNT: ${MAX_TRANSACTION_AMOUNT:-10000.0}
+      MAX_MONTHLY_SPEND: ${MAX_MONTHLY_SPEND:-10000.0}
+      MIN_MARGIN: ${MIN_MARGIN:-0.20}
+    ports:
+      - "8000:8000"
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    container_name: ai_business_os_dashboard
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:

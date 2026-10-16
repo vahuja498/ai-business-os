@@ -61,7 +61,14 @@ class Order(Base, UUIDMixin, TimestampMixin):
     customer_id: Mapped[str] = mapped_column(String(36), ForeignKey("customers.id", ondelete="SET NULL"), nullable=True)
     status: Mapped[str] = mapped_column(String(50), default="PENDING", nullable=False, index=True)
     amount: Mapped[float] = mapped_column(Float, default=0.0, nullable=False)
+    currency: Mapped[str] = mapped_column(String(10), default="INR", nullable=False)
     items: Mapped[list] = mapped_column(JSON, default=list, nullable=False)
+    gateway: Mapped[str] = mapped_column(String(50), default="mock", nullable=False)
+    gateway_order_id: Mapped[str] = mapped_column(String(100), nullable=True, index=True)
+    gateway_payment_id: Mapped[str] = mapped_column(String(100), nullable=True, index=True)
+    gateway_signature: Mapped[str] = mapped_column(String(255), nullable=True)
+    download_token: Mapped[str] = mapped_column(String(100), nullable=True, index=True)
+    metadata_json: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
 
 
 class Transaction(Base, UUIDMixin, TimestampMixin):

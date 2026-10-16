@@ -7,11 +7,13 @@ from apps.api.routers import (
     approvals,
     audit,
     businesses,
+    commerce,
     dashboard,
     health,
     opportunities,
     tasks,
     validation,
+    webhooks,
 )
 from database.connection import init_db
 
@@ -49,6 +51,8 @@ app.include_router(approvals.router)
 app.include_router(agents.router)
 app.include_router(tasks.router)
 app.include_router(audit.router)
+app.include_router(commerce.router)
+app.include_router(webhooks.router)
 
 
 @app.get("/")
