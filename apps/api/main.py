@@ -1,3 +1,9 @@
+import os
+import sys
+
+# Ensure repository root is on sys.path across all deployment runtimes
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -32,10 +38,18 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Configure CORS
+# Configure CORS with resilient parsing
+cors_origins = settings.CORS_ORIGINS
+if isinstance(cors_origins, str):
+    import json
+    try:
+        cors_origins = json.loads(cors_origins)
+    except Exception:
+        cors_origins = [o.strip() for o in cors_origins.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS or ["*"],
+    allow_origins=cors_origins or ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
