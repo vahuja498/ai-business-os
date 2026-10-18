@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { api, DashboardSummary } from "@/lib/api";
+import { api, DashboardSummary, API_BASE } from "@/lib/api";
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardSummary | null>(null);
@@ -52,7 +52,7 @@ export default function DashboardPage() {
 
       {error && (
         <div className="p-4 rounded-lg bg-red-950/40 border border-red-800 text-red-300 text-sm">
-          <strong>API Offline or Unreachable:</strong> {error}. Ensure FastAPI backend is running on port 8000.
+          <strong>API Offline or Unreachable ({API_BASE}):</strong> {error}. Ensure backend is active and CORS is permitted.
         </div>
       )}
 

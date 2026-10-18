@@ -38,18 +38,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Configure CORS with resilient parsing
-cors_origins = settings.CORS_ORIGINS
-if isinstance(cors_origins, str):
-    import json
-    try:
-        cors_origins = json.loads(cors_origins)
-    except Exception:
-        cors_origins = [o.strip() for o in cors_origins.split(",") if o.strip()]
-
+# Configure CORS to accept all origins including Vercel and localhost
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins or ["*"],
+    allow_origin_regex=r"^https?://.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
