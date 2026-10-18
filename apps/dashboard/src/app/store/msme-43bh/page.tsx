@@ -489,6 +489,22 @@ export default function MSMEComplianceProductPage() {
           </div>
         </div>
       </div>
+
+      {/* Compliance & Policy Footer for Razorpay / RBI Verification */}
+      <footer className="border-t border-slate-800 pt-8 mt-12 text-xs text-slate-500">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <span className="font-semibold text-slate-400">AI Business OS</span> • Operated by Vaibhav Ahuja, Faridabad, Haryana
+          </div>
+          <div className="flex flex-wrap gap-4 text-slate-400">
+            <Link href="/terms" className="hover:text-white transition">Terms &amp; Conditions</Link>
+            <Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link>
+            <Link href="/shipping" className="hover:text-white transition">Shipping &amp; Delivery</Link>
+            <Link href="/refunds" className="hover:text-white transition">Cancellation &amp; Refund</Link>
+            <Link href="/contact" className="hover:text-white transition">Contact Us</Link>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
